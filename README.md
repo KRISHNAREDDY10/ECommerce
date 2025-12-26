@@ -176,13 +176,13 @@ Start server:
 ```
 python manage.py runserver
 
-```
-Access:
-
 sample user
 username : krishna
 email : krishna@gmail.com
 password : mAnjuz-nokheb-4tuxmu
+
+```
+Access:
 
 ```
 http://127.0.0.1:8000/admin/
