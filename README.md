@@ -159,19 +159,31 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 ```
 python manage.py migrate
+
 ```
 
 ## 8. Create an Admin User
 
 ```
 python manage.py createsuperuser
+
+username : admin
+email : admin@example.com
+password : admin123
 ```
 
 Start server:
 ```
 python manage.py runserver
+
 ```
 Access:
+
+sample user
+username : krishna
+email : krishna@gmail.com
+password : mAnjuz-nokheb-4tuxmu
+
 ```
 http://127.0.0.1:8000/admin/
 ```
