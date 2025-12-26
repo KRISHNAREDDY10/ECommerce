@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Site</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to E-commerce Web Application</h1>
+        <nav>
+            <ul class="navbar">
+                <li><a href="{% url 'register' %}"><span class="icon">✍🏻-Register</span></a></li>
+                <li><a href="{% url 'login' %}"><span class="icon">👤-Login</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class='container'>
+        {% block content %}
+        <!-- Page-specific content goes here -->
+        {% endblock %}
+    </div>
+</body>
+</html>

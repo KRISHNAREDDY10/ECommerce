@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="{% static 'style/product_list.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Product List</h1>
+        <nav>
+            <ul class="navbar">
+                <li><a href="{% url 'store:product_list' %}"><span class="icon">🛍️ Products</span></a></li>
+                <li><a href="{% url 'store:cart_detail' %}"><span class="icon">🛒 Cart</span></a></li>
+                <li><a href="{% url 'logout' %}"><span class="icon">↪ Logout</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <form method="get" action="{% url 'store:product_list' %}" class="search-form">
+        <input type="text" name="search" placeholder="Search products..." value="{{ request.GET.search }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="product-container">
+        {% for product in page_obj %}
+        <div class="product-card">
+            <div class="image-container">
+                {% if product.banner %}
+                <img src="{{ product.banner.url }}" alt="{{ product.name }} Image" class="product-image">
+                {% endif %}
+            </div>
+            <div class="product-info">
+                <h2 class="product-name">{{ product.name }}</h2>
+                <p class="product-price">${{ product.price }}</p>
+                <div class="product-actions">
+                    <form action="{% url 'store:update_product' product.pk %}" method="get">
+                        <button type="submit" class="action-button update-button">Update</button>
+                    </form>
+                    <form action="{% url 'store:delete_product' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="action-button delete-button" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                    </form>
+                    <form method="post" action="{% url 'store:add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="action-button add-to-cart-button">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No products available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">&lsaquo; prev</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next &rsaquo;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'store:create_product' %}" class="create-product-link">Create New Product</a>
+
+</body>
+</html>

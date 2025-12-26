@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div class="cart-container">
+        {% if items %}
+            {% for item in items %}
+                <div class="cart-item">
+                    <img src="{{ item.product.banner.url }}" alt="{{ item.product.name }} Image" class="product-image">
+                    <div class="product-details">
+                        <h2>{{ item.product.name }}</h2>
+                        <p>Price: ${{ item.product.price }}</p>
+
+                        <!-- Quantity Update Section -->
+                        <div class="quantity-control">
+                            <p>Quantity: {{ item.quantity }}</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                
+                                <!-- Decrease button -->
+                                <button type="submit" name="action" value="decrease" class="quantity-button">-</button>
+
+                                <!-- Increase button -->
+                                <button type="submit" name="action" value="increase" class="quantity-button">+</button>
+                            </form>
+                        </div>
+
+                        <p>Total: ${{ item.total_price }}</p>
+                    </div>
+
+                    <!-- Remove button -->
+                    <div class="product-action">
+                        <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-button">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-cart">
+                <p>Your cart is empty.</p>
+            </div>
+        {% endif %}
+    </div>
+    <h3>Total Amount: ${{ total_amount }}</h3>
+
+    <!-- Checkout Button -->
+    <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+
+</body>
+</html>
